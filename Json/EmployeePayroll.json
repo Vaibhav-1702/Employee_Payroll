@@ -1,16 +1,52 @@
 {
   "EmpList": [
     {
-      "id": "6fea",
-      "name": "Vaibhav",
-      "profileImage": "../Assets/profile4.png",
+      "name": "Rajeev",
+      "profileImage": "../Assets/profile2.png",
       "gender": "Male",
       "departments": [
-        "Engineer"
+        "Sales"
+      ],
+      "salary": "60000",
+      "startDate": "16-Aug-2024",
+      "notes": "Hey this is Rajeev",
+      "id": "6fea"
+    },
+    {
+      "id": "272e",
+      "name": "Aditya",
+      "profileImage": "../Assets/profile2.png",
+      "gender": "Male",
+      "departments": [
+        "Finance"
       ],
       "salary": "50000",
-      "startDate": "10-Aug-2024",
-      "notes": "Hey this is vaibhav"
+      "startDate": "16-Aug-2023",
+      "notes": "Hey this is aditya"
+    },
+    {
+      "id": "577e",
+      "name": "Aarya",
+      "profileImage": "../Assets/profile3.png",
+      "gender": "Female",
+      "departments": [
+        "HR"
+      ],
+      "salary": "60000",
+      "startDate": "16-July-2023",
+      "notes": "Hey this is aarya"
+    },
+    {
+      "id": "205c",
+      "name": "Priya",
+      "profileImage": "../Assets/profile1.png",
+      "gender": "Female",
+      "departments": [
+        "Finance"
+      ],
+      "salary": "60000",
+      "startDate": "18-Oct-2024",
+      "notes": "Hey this is Priya"
     }
   ]
 }
