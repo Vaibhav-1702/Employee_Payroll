@@ -1,0 +1,16 @@
+{
+  "EmpList": [
+    {
+      "id": "6fea",
+      "name": "Vaibhav",
+      "profileImage": "../Assets/profile4.png",
+      "gender": "Male",
+      "departments": [
+        "Engineer"
+      ],
+      "salary": "50000",
+      "startDate": "10-Aug-2024",
+      "notes": "Hey this is vaibhav"
+    }
+  ]
+}

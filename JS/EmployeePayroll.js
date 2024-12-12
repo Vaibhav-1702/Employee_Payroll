@@ -1,49 +1,34 @@
+
 document.addEventListener('DOMContentLoaded', () => {
-    const empForm = document.getElementById('emp-form');
+    const empForm = $('#emp-form');
 
-    empForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
+    empForm.on('submit', (event) => {
+        event.preventDefault();
 
-        // Fetching form data
-        const name = document.getElementById('name').value;
-
-        const profileImage = document.querySelector('input[name="profile"]:checked') 
-                             ? document.querySelector('input[name="profile"]:checked').value 
-                             : null;
-
-        const gender = document.querySelector('input[name="gender"]:checked') 
-                       ? document.querySelector('input[name="gender"]:checked').value 
-                       : null;
-
-        // Fetching selected departments (checkbox values)
-        const departments = [];
-        document.querySelectorAll('input[name="department"]:checked').forEach((checkbox) => {
-            departments.push(checkbox.value);
-        });
-
-        const salary = document.getElementById('salary').value;
-
-        // Fetching start date
-        const day = document.getElementById('day').value;
-        const month = document.getElementById('month').value;
-        const year = document.getElementById('year').value;
-
-        const startDate = `${day}-${month}-${year}`;
-
-        const notes = document.getElementById('notes').value;
-
-        // Creating an object with form data
         const employeeData = {
-            name: name,
-            profileImage: profileImage,
-            gender: gender,
-            departments: departments,
-            salary: salary,
-            startDate: startDate,
-            notes: notes
+            name: $('#name').val(),
+            profileImage: $('input[name="profile"]:checked').val() || null,
+            gender: $('input[name="gender"]:checked').val() || null,
+            departments: $('input[name="department"]:checked').map(function () { return this.value; }).get(),
+            salary: $('#salary').val(),
+            startDate: `${$('#day').val()}-${$('#month').val()}-${$('#year').val()}`,
+            notes: $('#notes').val()
         };
 
-        // Printing the object to the console
-        console.log('Employee Data:', employeeData);
+        // jQuery AJAX call
+        $.ajax({
+            url: 'http://localhost:3000/EmpList',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(employeeData),
+            success: (response) => {
+                console.log('Success:', response);
+                alert('Employee data saved successfully!');
+            },
+            error: (xhr, status, error) => {
+                console.error('Error:', xhr.responseText);
+                alert('Failed to save employee data.');
+            }
+        });
     });
 });

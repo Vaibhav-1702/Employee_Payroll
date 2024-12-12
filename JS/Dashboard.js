@@ -1,87 +1,113 @@
-// Employee Data Array (Single Entry)
-const employeeData = [
-    {
-        profileImage: "C:/Users/vaibhav/Desktop/EmployeePayroll/Assets/profile1.png", 
-        name: "John Doe",
-        gender: "Male",
-        department: "Engineering",
-        salary: "70,000",
-        startDate: "1 Jan 2024"
-    }
-];
 
-// Function to Populate Table
 function populateEmployeeTable() {
     const tableBody = document.getElementById("employeeTableBody");
 
-    // Loop through employee data (only one entry in this case)
-    employeeData.forEach(employee => {
-        const row = document.createElement("tr");
+    // Fetch data from JSON Server API
+    fetch('http://localhost:3000/EmpList')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(data => {
+            // Iterate through each employee object
+            data.forEach(employee => {
+                const row = document.createElement("tr");
 
-        // Profile Image (1st column)
-        const profileCell = document.createElement("td");
-        const img = document.createElement("img");
-        img.src = employee.profileImage;
-        img.alt = "Profile Image";
-        img.className = "profile-img";
-        profileCell.appendChild(img);
-        row.appendChild(profileCell);
+                // Profile Image
+                const profileCell = document.createElement("td");
+                const img = document.createElement("img");
+                img.src = employee.profileImage;
+                img.alt = "Profile Image";
+                img.className = "profile-img";
+                profileCell.appendChild(img);
+                row.appendChild(profileCell);
 
-        // Name
-        const nameCell = document.createElement("td");
-        nameCell.textContent = employee.name;
-        row.appendChild(nameCell);
+                // Name
+                const nameCell = document.createElement("td");
+                nameCell.textContent = employee.name;
+                row.appendChild(nameCell);
 
-        // Gender
-        const genderCell = document.createElement("td");
-        genderCell.textContent = employee.gender;
-        row.appendChild(genderCell);
+                // Gender
+                const genderCell = document.createElement("td");
+                genderCell.textContent = employee.gender;
+                row.appendChild(genderCell);
 
-        // Department
-        const departmentCell = document.createElement("td");
-        departmentCell.textContent = employee.department;
-        row.appendChild(departmentCell);
+                // Department
+                // const departmentCell = document.createElement("td");
+                // departmentCell.textContent = employee.department;
+                // row.appendChild(departmentCell);
 
-        // Salary
-        const salaryCell = document.createElement("td");
-        salaryCell.textContent = employee.salary;
-        row.appendChild(salaryCell);
+                const departmentCell = document.createElement("td");
 
-        // Start Date
-        const startDateCell = document.createElement("td");
-        startDateCell.textContent = employee.startDate;
-        row.appendChild(startDateCell);
+            // Check if departments is an array and join them with commas
+                if (Array.isArray(employee.departments)) {
+                departmentCell.textContent = employee.departments.join(", "); // Join array elements as a string
+                } 
+                else 
+                {
+                departmentCell.textContent = employee.departments; // Handle single string value
+                }
 
-        // Action Buttons (Edit/Delete)
-        const actionCell = document.createElement("td");
-        actionCell.className = "action-buttons";
+                row.appendChild(departmentCell);
 
-        // Delete Button
-        const deleteBtn = document.createElement("button");
-        deleteBtn.id = "delete-btn";
-        const deleteImg = document.createElement("img");
-        deleteImg.src = "C:\Users\vaibhav\Desktop\EmployeePayroll\Assets\delete_icon.png";
-        deleteImg.alt = "Delete";
-        deleteImg.id = "delete_icon";
-        deleteBtn.appendChild(deleteImg);
-        actionCell.appendChild(deleteBtn);
+                // Salary
+                const salaryCell = document.createElement("td");
+                salaryCell.textContent = employee.salary;
+                row.appendChild(salaryCell);
 
-        // Edit Button
-        const editBtn = document.createElement("button");
-        editBtn.id = "edit-btn";
-        const editImg = document.createElement("img");
-        editImg.src = "C:\Users\vaibhav\Desktop\EmployeePayroll\Assets\edit_icon.png";
-        editImg.alt = "Edit";
-        editImg.id = "edit_icon";
-        editBtn.appendChild(editImg);
-        actionCell.appendChild(editBtn);
+                // Start Date
+                const startDateCell = document.createElement("td");
+                startDateCell.textContent = employee.startDate;
+                row.appendChild(startDateCell);
 
-        row.appendChild(actionCell);
+                // Action Buttons
+                const actionCell = document.createElement("td");
+                actionCell.className = "action-buttons";
 
-        // Append Row to Table Body
-        tableBody.appendChild(row);
-    });
+                // Delete Button
+                const deleteBtn = document.createElement("button");
+                deleteBtn.id = "delete-btn";
+                deleteBtn.style.marginTop = "10px";
+                const deleteImg = document.createElement("img");
+                deleteImg.src = "../Assets/delete_icon.png";
+                deleteImg.alt = "Delete";
+                deleteImg.id = "delete_icon";
+                deleteBtn.appendChild(deleteImg);
+                deleteBtn.addEventListener("click", () => deleteEmployee(employee.id));
+                actionCell.appendChild(deleteBtn);
+
+                // Edit Button
+                const editBtn = document.createElement("button");
+                editBtn.id = "edit-btn";
+                editBtn.style.marginTop = "10px";
+                const editImg = document.createElement("img");
+                editImg.src = "../Assets/edit_icon.png";
+                editImg.alt = "Edit";
+                editImg.id = "edit_icon";
+                editBtn.appendChild(editImg);
+                editBtn.addEventListener("click", () => editEmployee(employee.id));
+                actionCell.appendChild(editBtn);
+
+                row.appendChild(actionCell);
+
+                // Append Row to Table Body
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error fetching employee data:", error));
+}
+
+function deleteEmployee(id) {
+    fetch(`http://localhost:3000/EmpList/${id}`, { method: 'DELETE' })
+        .then(() => {
+            alert("Employee deleted successfully!");
+            location.reload();
+        })
+        .catch(error => console.error("Error deleting employee:", error));
 }
 
 // Call the Function to Populate Table on Page Load
 window.onload = populateEmployeeTable;
+
